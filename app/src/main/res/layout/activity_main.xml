@@ -80,4 +80,41 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/buttonSave"
         android:text="TextView" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayoutHeader"
+        android:background="@color/colorAccent"
+        android:layout_below="@+id/textViewDataMahasiswa"
+        >
+    <TextView
+        android:id="@+id/textViewRowNim"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="NIM" />
+
+    <TextView
+        android:id="@+id/textViewRowNama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/textViewRowNim"
+        android:layout_toRightOf="@+id/textViewRowNim"
+        android:text="Nama" />
+
+    <TextView
+        android:id="@+id/textViewRowJurusan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Jurusan" />
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/recyclerViewMahasiswa"
+        android:layout_below="@+id/relativeLayoutHeader" />
 </RelativeLayout>

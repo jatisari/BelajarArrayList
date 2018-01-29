@@ -1,7 +1,10 @@
 package net.agusharyanto.belajararraylist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +23,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewDataMahasiswa;
 
     ArrayList<Mahasiswa> mahasiswaArrayList = new ArrayList<Mahasiswa>();
-
+    private RecyclerView mRecyclerView;
+    private MahasiswaAdapter rvAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Context context = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonSave.setOnClickListener( this );
         buttonHapus.setOnClickListener( this );
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewMahasiswa);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // specify an adapter (see also next example)
+        //initializeData();
+
+        gambarDatakeRecyclerView();
     }
 
     /**
@@ -120,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mahasiswa.setNama(nama);
         mahasiswa.setJurusan(jurusan);
         mahasiswaArrayList.add(mahasiswa);
-        printData();
+        gambarDatakeRecyclerView();
 
     }
 
@@ -133,6 +151,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewDataMahasiswa.setText(data);
     }
 
+
+    private void gambarDatakeRecyclerView(){
+        rvAdapter = new MahasiswaAdapter(mahasiswaArrayList);
+        mRecyclerView.setAdapter(rvAdapter);
+
+
+    }
     /*Tugas buatlah project baru untuk Barang yang atributnya id,kode,nama,harga */
 
 }
