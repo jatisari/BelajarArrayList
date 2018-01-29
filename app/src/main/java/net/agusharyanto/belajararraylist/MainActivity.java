@@ -113,7 +113,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String nama = editTextNama.getText().toString();
         String jurusan = editTextJurusan.getText().toString();
         String id = mahasiswaArrayList.size() + 1+"";
-        mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, jurusan));
+       // mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, jurusan));
+        Mahasiswa mahasiswa = new Mahasiswa();
+        mahasiswa.setId(id);
+        mahasiswa.setNim(nim);
+        mahasiswa.setNama(nama);
+        mahasiswa.setJurusan(jurusan);
+        mahasiswaArrayList.add(mahasiswa);
         printData();
 
     }
