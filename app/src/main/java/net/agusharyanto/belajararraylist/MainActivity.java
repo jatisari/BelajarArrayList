@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String data = "";
         for (int i=0; i<mahasiswaArrayList.size(); i++){
             //System.out.println(mahasiswaArrayList.get(i).toString());
-            data +=mahasiswaArrayList.get(i).getNama()+"\n";
+            data +=mahasiswaArrayList.get(i).toString()+"\n";
         }
         textViewDataMahasiswa.setText(data);
     }
