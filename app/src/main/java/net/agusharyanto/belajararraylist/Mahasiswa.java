@@ -20,6 +20,9 @@ public class Mahasiswa {
                 '}';
     }
 
+    public String getData(){
+        return id +" "+ nim + " "+ nama + " "+jurusan;
+    }
     public Mahasiswa(){
     }
     public Mahasiswa(String id, String nim, String nama, String jurusan) {

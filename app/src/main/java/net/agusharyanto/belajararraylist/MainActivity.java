@@ -2,16 +2,31 @@ package net.agusharyanto.belajararraylist;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+
+    private EditText editTextNIM;
+    private EditText editTextNama;
+    private EditText editTextJurusan;
+    private Button buttonSave;
+    private Button buttonHapus;
+    private TextView textViewDataMahasiswa;
+
+    ArrayList<Mahasiswa> mahasiswaArrayList = new ArrayList<Mahasiswa>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         // create an array list
         ArrayList al = new ArrayList();
         System.out.println("Initial size of al: " + al.size());
@@ -50,7 +65,68 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i<mahasiswaArrayList.size(); i++){
             System.out.println(mahasiswaArrayList.get(i).toString());
         }
+        */
+
+        findViews();
+
 
 
     }
+
+
+    /**
+     * Find the Views in the layout<br />
+     * <br />
+     * Auto-created on 2018-01-29 14:35:53 by Android Layout Finder
+     * (http://www.buzzingandroid.com/tools/android-layout-finder)
+     */
+    private void findViews() {
+        editTextNIM = (EditText)findViewById( R.id.editTextNIM );
+        editTextNama = (EditText)findViewById( R.id.editTextNama );
+        editTextJurusan = (EditText)findViewById( R.id.editTextJurusan );
+        buttonSave = (Button)findViewById( R.id.buttonSave );
+        buttonHapus = (Button)findViewById( R.id.buttonHapus );
+        textViewDataMahasiswa = (TextView)findViewById( R.id.textViewDataMahasiswa );
+
+        buttonSave.setOnClickListener( this );
+        buttonHapus.setOnClickListener( this );
+    }
+
+    /**
+     * Handle button click events<br />
+     * <br />
+     * Auto-created on 2018-01-29 14:35:53 by Android Layout Finder
+     * (http://www.buzzingandroid.com/tools/android-layout-finder)
+     */
+    @Override
+    public void onClick(View v) {
+        if ( v == buttonSave ) {
+            // Handle clicks for buttonSave
+            saveData();
+        } else if ( v == buttonHapus ) {
+            // Handle clicks for buttonHapus
+        }
+    }
+
+    private void saveData() {
+        String nim = editTextNIM.getText().toString();
+        String nama = editTextNama.getText().toString();
+        String jurusan = editTextJurusan.getText().toString();
+        String id = mahasiswaArrayList.size() + 1+"";
+        mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, jurusan));
+        printData();
+
+    }
+
+    private void printData() {
+        String data = "";
+        for (int i=0; i<mahasiswaArrayList.size(); i++){
+            //System.out.println(mahasiswaArrayList.get(i).toString());
+            data +=mahasiswaArrayList.get(i).getNama()+"\n";
+        }
+        textViewDataMahasiswa.setText(data);
+    }
+
+    /*Tugas buatlah project baru untuk Barang yang atributnya id,kode,nama,harga */
+
 }
