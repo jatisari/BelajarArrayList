@@ -1,6 +1,7 @@
 package net.agusharyanto.belajararraylist;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Mahasiswa currMahasiswa;
     private String actflag ="";
     private int currposition = 0;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             saveData();
         } else if ( v == buttonHapus ) {
             // Handle clicks for buttonHapus
-            mahasiswaArrayList.remove(currMahasiswa);
+            //mahasiswaArrayList.remove(currMahasiswa);
+            databaseHelper.deleteMahasiswa(currMahasiswa, db);
             resetData();
         }
     }
@@ -156,21 +160,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currMahasiswa.setJurusan(jurusan);
         if (actflag.equals("add")){
             currMahasiswa.setId(id);
-            mahasiswaArrayList.add(currMahasiswa);
+           // mahasiswaArrayList.add(currMahasiswa);
+            databaseHelper.insertMahasiswa(currMahasiswa, db);
         }else{
-           mahasiswaArrayList.set(currposition, currMahasiswa);
-
+           //mahasiswaArrayList.set(currposition, currMahasiswa);
+            databaseHelper.updateMahasiswa(currMahasiswa,db);
         }
        resetData();
 
     }
     private void initDataMahasiswa(){
-        for (int i=1; i<5; i++) {
+        /*for (int i=1; i<5; i++) {
             String id = i+"";
             String nim = 1000+i+"";
             String nama = "Joni "+i;
             mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, "MI"));
-        }
+        }*/
+
+        databaseHelper = new DatabaseHelper(context);
+        db = databaseHelper.getWritableDatabase();
+
+        mahasiswaArrayList = databaseHelper.getDataMahasiswa(db);
 
     }
 
@@ -185,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void gambarDatakeRecyclerView(){
+        mahasiswaArrayList = databaseHelper.getDataMahasiswa(db);
         rvAdapter = new MahasiswaAdapter(mahasiswaArrayList, context);
         mRecyclerView.setAdapter(rvAdapter);
 
@@ -218,5 +229,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     /*Tugas buatlah project baru untuk Barang yang atributnya id,kode,nama,harga */
+
+    @Override
+    public void onDestroy(){
+        db.close();
+        databaseHelper.close();
+        super.onDestroy();
+    }
 
 }
