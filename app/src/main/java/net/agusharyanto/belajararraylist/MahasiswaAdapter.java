@@ -1,9 +1,11 @@
 package net.agusharyanto.belajararraylist;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.List;
 
 public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder> {
     List<Mahasiswa> mahasiswas;
+    Context context;
 
-    public MahasiswaAdapter(List<Mahasiswa> mahasiswas) {
+    public MahasiswaAdapter(List<Mahasiswa> mahasiswas, Context pcontext) {
         this.mahasiswas = mahasiswas;
+        this.context = pcontext;
     }
 
     @Override
@@ -28,6 +32,16 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
 
     @Override
     public void onBindViewHolder(MahasiswaViewHolder mahasiswaViewHolder, int i) {
+
+        //root.setBackgroundColor(getResources().getColor(color.white));
+        if (i%2==0) {
+            mahasiswaViewHolder.relativeLayoutRowMhs.setBackgroundColor(context.getResources().getColor(R.color.green));
+        }else{
+                mahasiswaViewHolder.relativeLayoutRowMhs.setBackgroundColor(context.getResources().getColor(R.color.lightgreen));
+
+
+        }
+
         mahasiswaViewHolder.mahasiswaName.setText(mahasiswas.get(i).getNama());
         mahasiswaViewHolder.mahasiswaJurusan.setText(mahasiswas.get(i).getJurusan());
         mahasiswaViewHolder.mahasiswaNim.setText(mahasiswas.get(i).getNim());
@@ -38,15 +52,24 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.Maha
         return mahasiswas.size();
     }
 
+    public Mahasiswa getItem(int position) {
+        return mahasiswas.get(position);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
     public static class MahasiswaViewHolder extends RecyclerView.ViewHolder {
-        //  CardView cv;
+        RelativeLayout relativeLayoutRowMhs;
         TextView mahasiswaName;
         TextView mahasiswaJurusan;
         TextView mahasiswaNim;
 
         MahasiswaViewHolder(View itemView) {
             super(itemView);
-            //      cv = (CardView) itemView.findViewById(R.id.cv);
+            relativeLayoutRowMhs = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutRowMhs);
             mahasiswaName = (TextView) itemView.findViewById(R.id.textViewRowNama);
             mahasiswaJurusan = (TextView) itemView.findViewById(R.id.textViewRowJurusan);
             mahasiswaNim = (TextView) itemView.findViewById(R.id.textViewRowNim);

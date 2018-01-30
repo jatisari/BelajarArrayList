@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MahasiswaAdapter rvAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Context context = MainActivity.this;
+    private Mahasiswa currMahasiswa;
+    private String actflag ="";
+    private int currposition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         */
 
+        currMahasiswa = new Mahasiswa();
+        actflag="add";
         findViews();
 
 
@@ -106,7 +112,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(mLayoutManager);
         // specify an adapter (see also next example)
         //initializeData();
+        initDataMahasiswa();
+        gambarDatakeRecyclerView();
+    }
 
+    private void resetData(){
+        currMahasiswa=new Mahasiswa();
+        actflag="add";
+        setData(currMahasiswa);
         gambarDatakeRecyclerView();
     }
 
@@ -123,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             saveData();
         } else if ( v == buttonHapus ) {
             // Handle clicks for buttonHapus
+            mahasiswaArrayList.remove(currMahasiswa);
+            resetData();
         }
     }
 
@@ -130,15 +145,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String nim = editTextNIM.getText().toString();
         String nama = editTextNama.getText().toString();
         String jurusan = editTextJurusan.getText().toString();
+
         String id = mahasiswaArrayList.size() + 1+"";
+
+
        // mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, jurusan));
-        Mahasiswa mahasiswa = new Mahasiswa();
-        mahasiswa.setId(id);
-        mahasiswa.setNim(nim);
-        mahasiswa.setNama(nama);
-        mahasiswa.setJurusan(jurusan);
-        mahasiswaArrayList.add(mahasiswa);
-        gambarDatakeRecyclerView();
+
+        currMahasiswa.setNim(nim);
+        currMahasiswa.setNama(nama);
+        currMahasiswa.setJurusan(jurusan);
+        if (actflag.equals("add")){
+            currMahasiswa.setId(id);
+            mahasiswaArrayList.add(currMahasiswa);
+        }else{
+           mahasiswaArrayList.set(currposition, currMahasiswa);
+
+        }
+       resetData();
+
+    }
+    private void initDataMahasiswa(){
+        for (int i=1; i<5; i++) {
+            String id = i+"";
+            String nim = 1000+i+"";
+            String nama = "Joni "+i;
+            mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, "MI"));
+        }
 
     }
 
@@ -153,9 +185,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void gambarDatakeRecyclerView(){
-        rvAdapter = new MahasiswaAdapter(mahasiswaArrayList);
+        rvAdapter = new MahasiswaAdapter(mahasiswaArrayList, context);
         mRecyclerView.setAdapter(rvAdapter);
 
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        currposition = position;
+                        Mahasiswa mahasiswa = rvAdapter.getItem(position);
+                        Toast.makeText(context, "Name :" + mahasiswa.getNama(), Toast.LENGTH_SHORT).show();
+                        actflag="edit";
+                        setData(mahasiswa);
+
+                        // selectedPosition = position;
+                       /* Intent intent = new Intent(MainActivity.this, MahasiswaActivity.class);
+                        intent.putExtra("mahasiswa", mahasiswa);
+                        startActivityForResult(intent, REQUEST_CODE_EDIT);*/
+                    }
+                })
+        );
+
+
+    }
+
+
+    private void setData(Mahasiswa objmahasiswa){
+        currMahasiswa = objmahasiswa;
+        editTextNIM.setText(currMahasiswa.getNim());
+        editTextNama.setText(currMahasiswa.getNama());
+        editTextJurusan.setText(currMahasiswa.getJurusan());
 
     }
     /*Tugas buatlah project baru untuk Barang yang atributnya id,kode,nama,harga */
