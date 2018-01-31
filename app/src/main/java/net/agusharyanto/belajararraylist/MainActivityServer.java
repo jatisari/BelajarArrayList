@@ -3,7 +3,6 @@ package net.agusharyanto.belajararraylist;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,8 +47,7 @@ public class MainActivityServer extends AppCompatActivity implements View.OnClic
     private Mahasiswa currMahasiswa;
     private String actflag ="";
     private int currposition = 0;
-    private DatabaseHelper databaseHelper;
-    private SQLiteDatabase db;
+
     private ProgressDialog pDialog;
 
 
@@ -188,21 +186,6 @@ public class MainActivityServer extends AppCompatActivity implements View.OnClic
         } catch (JSONException e) {
             Log.d("ViewActivitysave", "errorJSON");
         }
-
-    }
-
-    private void initDataMahasiswa(){
-        /*for (int i=1; i<5; i++) {
-            String id = i+"";
-            String nim = 1000+i+"";
-            String nama = "Joni "+i;
-            mahasiswaArrayList.add(new Mahasiswa(id, nim, nama, "MI"));
-        }*/
-
-        databaseHelper = new DatabaseHelper(context);
-        db = databaseHelper.getWritableDatabase();
-
-        mahasiswaArrayList = databaseHelper.getDataMahasiswa(db);
 
     }
 
@@ -376,11 +359,6 @@ public class MainActivityServer extends AppCompatActivity implements View.OnClic
     }
     /*Tugas buatlah project baru untuk Barang yang atributnya id,kode,nama,harga */
 
-    @Override
-    public void onDestroy(){
-        db.close();
-        databaseHelper.close();
-        super.onDestroy();
-    }
+
 
 }
